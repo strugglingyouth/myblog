@@ -34,3 +34,15 @@
         </div>
     </div>
 {% endblock %}    
+
+<!-- 分页功能  -->
+
+{% load paginate_tags %}
+{% paginate article_list 7 %}
+
+{% for article in article_list %}
+    display the article information 
+{% endfor %}
+
+{% include 'blog/pagination.html' %}
+

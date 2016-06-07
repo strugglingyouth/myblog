@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
 
     'blog',
+    'pagination',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -52,6 +53,9 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
+    'pagination.middleware.PaginationMiddleware',
 ]
 
 ROOT_URLCONF = 'myblog.urls'
@@ -132,3 +136,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
+
+
+
+
+
+
+
+

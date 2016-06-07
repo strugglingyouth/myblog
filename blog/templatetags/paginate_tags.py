@@ -2,7 +2,7 @@
 # coding=utf-8
 
 from django import template
-from django.core.paginate import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 register = template.Library()
 
@@ -42,11 +42,35 @@ def paginate(context, object_list, page_count):
         context['pages_last'] = 2
     return ''
 
-def get_left():
-    pass
+def get_left(current_page, left, num_pages):
+    """
+        当前页为最大值时，取左边2个，否则包含自己在内取三个
+    """
+    if current_page == 1:
+        return []
+    elif current_page == num_pages:
+        l = [i - 1 for i in range(current_page, current_page - left, -1) if i - 1 > 1]
+        l.sort()
+        return l
+    l = [i for i in range(current_page, current_page - left, -1) if i > 1 ]
+    l.sort()
+    return l
+        
+def get_right(current_page, right, num_pages):
+    """
+        取右边两个不包含自己
+    """
+    if current_page == num_pages:
+        return []
+    return [i + 1 for i in range(current_page, current_page + right - 1) if i < num_pages - 1]
+        
 
-def get_right():
-    pass
+
+
+
+
+
+
 
 
 
