@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
     <div id="banner" class="noselect"></div>
     <div id="category" class="noselect">
@@ -14,6 +15,9 @@
     
     <div id="bd" class="wrp clear-fix">
         <div id="main">
+            <!-- 分页功能  -->
+            {% load paginate_tags %}
+            {% paginate article_list 7 %}
             {% for article in article_list %}
                 <div class="post">
                     <div class="post-hd">
@@ -31,18 +35,10 @@
                     </div>
                 </div>
             {% endfor %}    
+            {% include 'blog/pagination.html' %}
         </div>
     </div>
 {% endblock %}    
 
-<!-- 分页功能  -->
 
-{% load paginate_tags %}
-{% paginate article_list 7 %}
-
-{% for article in article_list %}
-    display the article information 
-{% endfor %}
-
-{% include 'blog/pagination.html' %}
 

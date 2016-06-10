@@ -501,9 +501,7 @@ a.backToTop:hover {
 #main {
     float: left;
     overflow-x: hidden;
-    width: 100%;
-    margin-bottom:50px;
-
+    width: 100%
 }
 
 .post {

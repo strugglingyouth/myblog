@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'blog',
     'pagination',
+    'pygments',
 ]
 
 MIDDLEWARE_CLASSES = [
