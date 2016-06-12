@@ -70,10 +70,3 @@ class CategoryView(ListView):
 
 
 
-
-
-
-
-
-
-
