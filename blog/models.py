@@ -21,6 +21,9 @@ class time_stamp(models.Model):
 
 
 class Article(models.Model):
+    """
+        文章结构
+    """
     STATUS_CHOICES = (
             ('d','Draft'),
             ('p','Published'),
@@ -36,6 +39,7 @@ class Article(models.Model):
     likes = models.PositiveIntegerField('点赞数',default=0)
     topped = models.BooleanField('置顶', default=False)
     category = models.ForeignKey('Category', verbose_name='分类',null=True,on_delete=models.SET_NULL)
+    tags = models.ManyToManyField('Tag', verbose_name='标签云', blank=True)
     #author = models.ForeignKey(User,'作者')
 
     def __str__(self):
@@ -48,6 +52,10 @@ class Article(models.Model):
 
 
 class Category(models.Model):
+    """
+        目录分类
+    """
+
     name = models.CharField('类名',max_length=20)
     created_time = models.DateTimeField('创建时间',auto_now_add=True)
     last_modified_time = models.DateTimeField('修改时间',auto_now=True)
@@ -57,9 +65,19 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
+class Tags(models.Model):
+    """
+        标签云
+    """
 
+    name = models.CharField('标签名', max_length=20) 
+    created_time = models.DateTimeField('创建时间', auto_now_add=True)
+    last_modified_time = models.DateTimeField('修改时间', auto_now_add=True)
 
-
+    def __str__(self):
+        return self.name 
+    def unicode(self):
+        return self.name 
 
 
 
