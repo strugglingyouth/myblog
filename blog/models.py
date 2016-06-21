@@ -65,7 +65,7 @@ class Category(models.Model):
     def __unicode__(self):
         return self.name
 
-class Tags(models.Model):
+class Tag(models.Model):
     """
         标签云
     """
