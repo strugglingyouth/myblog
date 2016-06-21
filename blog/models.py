@@ -8,7 +8,7 @@ sys.setdefaultencoding('utf-8')
 from django.shortcuts import render
 from django.db import models
 from django.contrib.auth.models import User
-
+from collections import defaultdict
 
 class time_stamp(models.Model):
     """
@@ -78,6 +78,25 @@ class Tag(models.Model):
         return self.name 
     def unicode(self):
         return self.name 
+
+
+class ArctileManager(models.Manager):
+    """
+        继承manager并为其添加一个 archive 方法
+    """
+    
+    def archive(self):
+        date_list = Article.objects.datetimes('created_time', 'month', order='DESC')
+        
+        date_dict = defaultdict(list)  #将字典中的values默认常见为list的实例
+        for d in date_list:
+            date_dict[d.year].append(d.month)
+
+        return sorted(date_dict.items(), reverse=True)    
+
+
+
+
 
 
 
