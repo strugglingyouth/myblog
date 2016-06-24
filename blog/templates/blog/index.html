@@ -2,6 +2,7 @@
 
 {% block content %}
     <div id="banner" class="noselect"></div>
+    
     <div id="category" class="noselect">
         <div id="category-title">
             <ul>
@@ -38,6 +39,34 @@
             {% include 'blog/pagination.html' %}
         </div>
     </div>
+    
+    <!-- --归档-- -->
+    <h3>文章归档：</h3>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        {% for year,months in date_archive %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="heading{{ forloop.counter }}">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"
+                           href="#collapse{{ forloop.counter }}"
+                           aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+                            {{ year }} 年
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse in" role="tabpanel"
+                     aria-labelledby="heading{{ forloop.counter }}">
+                    <div class="panel-body">
+                        {% for month in months %}
+                            <a href="{% url 'blog:archive' year month %}"><p>{{ month }} 月</p></a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    
+    </div>
+    
 {% endblock %}    
 
 

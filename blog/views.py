@@ -25,6 +25,8 @@ class IndexView(ListView):
 
     def get_context_data(self, **kwargs):
         kwargs['category_list'] = Category.objects.all().order_by('name')
+
+        # 使用自定义的 manager ，调用 archive 方法，
         kwargs['date_archive'] = Article.objects.archive()
         kwargs['tag_list'] = Tag.objects.all().order_by('name')
         return super(IndexView, self).get_context_data(**kwargs)
@@ -91,7 +93,20 @@ class TagView(ListView):
         kwargs['tar_id'] = Tag.objects.all().order_by('name')
         return super(TagView, self).get_context_data(**kwargs)
 
+class ArchiveView(ListView):
+    template_name = 'blog/index.html'
+    context_object_name = 'article_list'
+    
+    
+    def get_queryset(self): 
+        # 将从 url 传入的参数year 和 month 转换为 int
+        year = int(self.kwargs['year'])
+        month = int(self.kwargs['month'])
 
+        article_list = Article.objects.filter(created_time__year=year, created_time__month=month)
+        for article in article_list:
+            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'], )
+        return article_list
 
 
 

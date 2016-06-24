@@ -80,7 +80,7 @@ class Tag(models.Model):
         return self.name 
 
 
-class ArctileManager(models.Manager):
+class ArticleManager(models.Manager):
     """
         继承manager并为其添加一个 archive 方法
     """
@@ -93,6 +93,13 @@ class ArctileManager(models.Manager):
             date_dict[d.year].append(d.month)
 
         return sorted(date_dict.items(), reverse=True)    
+
+class Article(models.Model):
+    """
+         自定义 manager 后要在 model 中显示的指定
+    """
+    objects = ArticleManager()
+
 
 
 
