@@ -3,7 +3,7 @@
 from django.shortcuts import render
 
 from django.views.generic import ListView,DetailView
-from blog.models import Article, Category
+from blog.models import Article, Category, Tag
 import markdown2
 
 

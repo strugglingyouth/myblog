@@ -10,6 +10,23 @@ from django.db import models
 from django.contrib.auth.models import User
 from collections import defaultdict
 
+
+class ArctileManager(models.Manager):
+    """
+        继承manager并为其添加一个 archive 方法
+    """
+    
+    def archive(self):
+        date_list = Article.objects.datetimes('created_time', 'month', order='DESC')
+        
+        date_dict = defaultdict(list)  #将字典中的values默认常见为list的实例
+        for d in date_list:
+            date_dict[d.year].append(d.month)
+
+        return sorted(date_dict.items(), reverse=True)    
+
+
+
 class time_stamp(models.Model):
     """
         抽象基类
@@ -47,6 +64,9 @@ class Article(models.Model):
     def __unicode(self):
         return self.title
 
+    objects = ArctileManager()
+
+
     class Meta:
         ordering = ['-last_modified_time']
 
@@ -78,33 +98,5 @@ class Tag(models.Model):
         return self.name 
     def unicode(self):
         return self.name 
-
-
-class ArticleManager(models.Manager):
-    """
-        继承manager并为其添加一个 archive 方法
-    """
-    
-    def archive(self):
-        date_list = Article.objects.datetimes('created_time', 'month', order='DESC')
-        
-        date_dict = defaultdict(list)  #将字典中的values默认常见为list的实例
-        for d in date_list:
-            date_dict[d.year].append(d.month)
-
-        return sorted(date_dict.items(), reverse=True)    
-
-class Article(models.Model):
-    """
-         自定义 manager 后要在 model 中显示的指定
-    """
-    objects = ArticleManager()
-
-
-
-
-
-
-
 
 
