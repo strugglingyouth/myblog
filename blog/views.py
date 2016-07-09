@@ -53,7 +53,7 @@ class ArticleDetailView(DetailView):
 
     # 增加 form 到 context
     def get_context_data(self, **kwargs):
-        kwargs['comment_list'] = BlogComment.objects.blogcomment_set.all()
+        kwargs['comment_list'] = self.object.blogcomment_set.all()
         kwargs['form'] = BlogCommentForm()
         return super(ArticleDetailView, self).get_context_data(**kwargs)
 
