@@ -25,12 +25,11 @@ class ArctileManager(models.Manager):
 
         return sorted(date_dict.items(), reverse=True)    
 
-
-
 class time_stamp(models.Model):
     """
         抽象基类
     """
+    # auto_now_add 一次产生  auto_now 每次动作都会更新
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     last_modified_time = models.DateTimeField('修改时间', auto_now=True)
     class Meta:
@@ -96,7 +95,30 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name 
-    def unicode(self):
+    def __unicode__(self):
         return self.name 
+
+
+class BlogComment(models.Model):
+    """
+        评论信息
+    """
+    user_name = models.CharField('评论者名字', max_length=100)
+    user_email = models.EmailField('评论者邮箱', max_length=255)
+    body = models.TextField('评论内容')
+    created_time = models.DateTimeField('发表评论时间', auto_now_add=True)
+    article = models.ForeignKey('Article', verbose_name='评论文章', on_delete=models.CASCADE)
+    website = models.URLField(verify_exists=True)  #检查 url 可用性
+
+    def __str__(self):
+        return self.body[:20]  
+
+    def __unicode__(self):
+        return self.body[:20]
+
+
+
+
+
 
 
