@@ -4,16 +4,31 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
-from django.shortcuts import render
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from collections import defaultdict
+
+
+class ArctileManager(models.Manager):
+    """
+        继承manager并为其添加一个 archive 方法
+    """
+    
+    def archive(self):
+        date_list = Article.objects.datetimes('created_time', 'month', order='DESC')
+        
+        date_dict = defaultdict(list)  #将字典中的values默认常见为list的实例
+        for d in date_list:
+            date_dict[d.year].append(d.month)
+
+        return sorted(date_dict.items(), reverse=True)    
 
 class time_stamp(models.Model):
     """
         抽象基类
     """
+    # auto_now_add 一次产生  auto_now 每次动作都会更新
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     last_modified_time = models.DateTimeField('修改时间', auto_now=True)
     class Meta:
@@ -47,8 +62,15 @@ class Article(models.Model):
     def __unicode(self):
         return self.title
 
+    objects = ArctileManager()
+
     class Meta:
         ordering = ['-last_modified_time']
+
+    # 为 Comment 的 FormView 提供的一个获取 url 的方法
+    def get_obsolute_url(self):
+        # reverse 解析 blog:detail 视图对应的 url  
+        return reverse('blog:detail', kwargs={'article_id': self.pk})
 
 
 class Category(models.Model):
@@ -76,24 +98,26 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name 
-    def unicode(self):
+    def __unicode__(self):
         return self.name 
 
 
-class ArctileManager(models.Manager):
+class BlogComment(models.Model):
     """
-        继承manager并为其添加一个 archive 方法
+        评论信息
     """
-    
-    def archive(self):
-        date_list = Article.objects.datetimes('created_time', 'month', order='DESC')
-        
-        date_dict = defaultdict(list)  #将字典中的values默认常见为list的实例
-        for d in date_list:
-            date_dict[d.year].append(d.month)
+    user_name = models.CharField('评论者名字', max_length=100)
+    user_email = models.EmailField('评论者邮箱', max_length=255)
+    body = models.TextField('评论内容')
+    created_time = models.DateTimeField('发表评论时间', auto_now_add=True)
+    article = models.ForeignKey('Article', verbose_name='评论文章', on_delete=models.CASCADE)
+    website = models.URLField('站点信息')  #检查 url 可用性
 
-        return sorted(date_dict.items(), reverse=True)    
+    def __str__(self):
+        return self.body[:20]  
 
+    def __unicode__(self):
+        return self.body[:20]
 
 
 
