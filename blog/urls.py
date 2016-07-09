@@ -1,3 +1,4 @@
+# coding:utf-8
 """myblog URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -25,6 +26,11 @@ urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^blog/article/(?P<article_id>\d+)$', views.ArticleDetailView.as_view(), name='detail'),
     url(r'^blog/category/(?P<cate_id>\d+)$', views.CategoryView.as_view(), name='category'),
+    # 标签对应的 url
     url(r'^tag/(?P<tag_id>\d+)$', views.TagView.as_view(), name='tag'),
+    # 文章归档对应的 url
     url(r'^archive/(?P<year>\d+)/(?P<month>\d+)$', views.ArchiveView.as_view(), name='archive'),
+    # 评论对应的 URL
+    url(r'^article/(?P<article_id>\d+)/comment/$', views.CommentPostView.as_view(), name='comment'),
+
 ]

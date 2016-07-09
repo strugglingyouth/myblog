@@ -1,9 +1,9 @@
 # coding:utf-8
 
-from django.shortcuts import render
-
-from django.views.generic import ListView,DetailView
-from blog.models import Article, Category, Tag
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
+from .forms import BlogCommentForm
+from django.views.generic import ListView, DetailView, FormView
+from blog.models import Article, Category, Tag, BlogComment
 import markdown2
 
 
@@ -49,7 +49,13 @@ class ArticleDetailView(DetailView):
     def get_object(self, queryset=None):
         obj = super(ArticleDetailView, self).get_object()  #重写 get_object
         obj.body = markdown2.markdown(obj.body, extras=['fenced-code-blocks'], )
-        return obj
+        return obj  
+
+    # 增加 form 到 context
+    def get_context_data(self, **kwargs):
+        kwargs['comment_list'] = BlogComment.objects.blogcomment_set.all()
+        kwargs['form'] = BlogCommentForm()
+        return super(ArticleDetailView, self).get_context_data(**kwargs)
 
 
 class CategoryView(ListView):
@@ -107,6 +113,56 @@ class ArchiveView(ListView):
         for article in article_list:
             article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'], )
         return article_list
+
+class CommentPostView(FormView):
+    form_class = BlogCommentForm  #指定使用的 form
+    template_name = 'blog/detail.html'  #指定使用的模板文件
+
+    def form_valid(self, form):
+        """
+            提交的数据合法
+        """
+        #get_object_or_404() 函数需要一个 Django 模型类作为第一个参数以及 一些关键字参数，它将这些参数传递给模型管理器中的 get() 函数。 若对象不存在时就抛出 Http404 异常。
+        # 首先根据 url 传入的文章 id ，获取相应的文章
+        target_article = get_object_or_404(Article, pk=self.kwargs['article_id'])
+
+
+        comment = form.save(commit=False)   #实例化一个 comment 对象，但是不保存评论
+        comment.article = target_article    # 为 comment 关联一个文章
+        comment.save()                      # 保存评论的内容
+
+        # 评论完成后返回到被评论的文章页面, get_obsolute_url 是 Article 新增的一个方法方便,获取文章对用的 utrl
+        self.success_url = target_article.get_absolute_url()  
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form):
+        """
+            提交的数据不合法
+        """
+        
+        target_article = get_object_or_404(Article, pk=self.kwargs['article_id'])
+        
+        # 不保存评论，返回原来的文章页面
+        return render(self.request, 'blog/detail.html', {
+            'form': form,
+            'article': target_article,
+            'comment_list': target_article.blogcomment_set.all(),       
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

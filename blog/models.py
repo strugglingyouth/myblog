@@ -4,8 +4,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
-from django.shortcuts import render
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from collections import defaultdict
@@ -65,9 +64,13 @@ class Article(models.Model):
 
     objects = ArctileManager()
 
-
     class Meta:
         ordering = ['-last_modified_time']
+
+    # 为 Comment 的 FormView 提供的一个获取 url 的方法
+    def get_obsolute_url(self):
+        # reverse 解析 blog:detail 视图对应的 url  
+        return reverse('blog:detail', kwargs={'article_id': self.pk})
 
 
 class Category(models.Model):
@@ -108,7 +111,7 @@ class BlogComment(models.Model):
     body = models.TextField('评论内容')
     created_time = models.DateTimeField('发表评论时间', auto_now_add=True)
     article = models.ForeignKey('Article', verbose_name='评论文章', on_delete=models.CASCADE)
-    website = models.URLField(verify_exists=True)  #检查 url 可用性
+    website = models.URLField('站点信息')  #检查 url 可用性
 
     def __str__(self):
         return self.body[:20]  
