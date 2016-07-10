@@ -30,7 +30,7 @@ class BlogCommentForm(forms.ModelForm):
             }),
             'user_email': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '请输入昵称邮箱',
+                'placeholder': '请输入邮箱',
                 'aria-describedby': 'sizing-addonl',
             }),
             'website': forms.TextInput(attrs={

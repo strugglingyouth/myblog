@@ -53,8 +53,9 @@ class ArticleDetailView(DetailView):
 
     # 增加 form 到 context
     def get_context_data(self, **kwargs):
-        kwargs['comment_list'] = self.object.blogcomment_set.all()
+        kwargs['comment_list'] = self.object.blogcomment_set.all()  #获取评论
         kwargs['form'] = BlogCommentForm()
+        kwargs['comment_count'] = self.object.blogcomment_set.count() #获取评论数量
         return super(ArticleDetailView, self).get_context_data(**kwargs)
 
 
@@ -146,7 +147,8 @@ class CommentPostView(FormView):
         return render(self.request, 'blog/detail.html', {
             'form': form,
             'article': target_article,
-            'comment_list': target_article.blogcomment_set.all(),       
+            'comment_list': target_article.blogcomment_set.all(),
+            'comment_count': target_article.blogcomment_set.count(),
         })
 
 

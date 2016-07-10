@@ -18,7 +18,7 @@ class ArctileManager(models.Manager):
     def archive(self):
         date_list = Article.objects.datetimes('created_time', 'month', order='DESC')
         
-        date_dict = defaultdict(list)  #将字典中的values默认常见为list的实例
+        date_dict = defaultdict(list)  #将字典中的values默认设置为list的实例
         for d in date_list:
             date_dict[d.year].append(d.month)
 
@@ -54,6 +54,7 @@ class Article(models.Model):
     likes = models.PositiveIntegerField('点赞数',default=0)
     topped = models.BooleanField('置顶', default=False)
     category = models.ForeignKey('Category', verbose_name='分类',null=True,on_delete=models.SET_NULL)
+    # blank 为 true，说明网页中填写的字段可以为空，null 为 True 说明 mysql 中的表可以为空
     tags = models.ManyToManyField('Tag', verbose_name='标签云', blank=True)
     #author = models.ForeignKey(User,'作者')
 
@@ -68,7 +69,7 @@ class Article(models.Model):
         ordering = ['-last_modified_time']
 
     # 为 Comment 的 FormView 提供的一个获取 url 的方法
-    def get_obsolute_url(self):
+    def get_absolute_url(self):
         # reverse 解析 blog:detail 视图对应的 url  
         return reverse('blog:detail', kwargs={'article_id': self.pk})
 
@@ -111,7 +112,7 @@ class BlogComment(models.Model):
     body = models.TextField('评论内容')
     created_time = models.DateTimeField('发表评论时间', auto_now_add=True)
     article = models.ForeignKey('Article', verbose_name='评论文章', on_delete=models.CASCADE)
-    website = models.URLField('站点信息')  #检查 url 可用性
+    website = models.URLField('站点信息', blank=True, null=True)  #检查 url 可用性
 
     def __str__(self):
         return self.body[:20]  
