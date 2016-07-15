@@ -2,8 +2,9 @@
 
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from .forms import BlogCommentForm
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, FormView, TemplateView
 from blog.models import Article, Category, Tag, BlogComment
+from django.contrib.syndication.views import Feed
 import markdown2
 
 
@@ -132,7 +133,7 @@ class CommentPostView(FormView):
         comment.article = target_article    # 为 comment 关联一个文章
         comment.save()                      # 保存评论的内容
 
-        # 评论完成后返回到被评论的文章页面, get_obsolute_url 是 Article 新增的一个方法方便,获取文章对用的 utrl
+        # 评论完成后返回到被评论的文章页面, get_obsolute_url 是 Article 新增的一个方法方便,获取文章对用的 url
         self.success_url = target_article.get_absolute_url()  
         return HttpResponseRedirect(self.success_url)
 
@@ -148,12 +149,32 @@ class CommentPostView(FormView):
             'form': form,
             'article': target_article,
             'comment_list': target_article.blogcomment_set.all(),
-            'comment_count': target_article.blogcomment_set.count(),
+            #'comment_count': target_article.blogcomment_set.count(),
         })
 
+class RssFeed(Feed):
+    title = "RSS Feed - article"
+    link = "/feeds/"
+    description = "RSS feed - blog posts"
 
+    def items(self):
+        return Article.objects.order_by("-created_time")
+    def item_title(self, item):
+        return item.title
+    def item_description(self, item):
+        return item.abstract
+    def item_pubdate(self, item):
+        return item.created_time
 
-
+class LoginView(TemplateView):
+    """
+        登录页面
+    """
+    template_name = 'blog/login.html'
+    def form_valid(self):
+        pass
+    def get_context_data(self, **kwargs):
+        pass
 
 
 

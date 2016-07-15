@@ -1,3 +1,5 @@
+# coding:utf-8
+
 """
 Django settings for myblog project.
 
@@ -11,6 +13,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from django.conf import global_settings # 使用 bootstrap_admin 插件
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,6 +36,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'bootstrap_admin',  #使用第三方的 admin 插件美化界面
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +51,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE_CLASSES = [
+    'django.middleware.cache.UpdateCacheMiddleware', # 设置站点级缓存，update 中间件放在列表开始位置
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,7 +63,9 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 
-    'pagination.middleware.PaginationMiddleware',
+    'pagination.middleware.PaginationMiddleware',  # 分页中间件
+
+    'django.middleware.cache.FetchFromCacheMiddleware', # fetch 中间件放在最后
 ]
 
 ROOT_URLCONF = 'myblog.urls'
@@ -72,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',  #  处理 bootstrap_admin， Django 1.8 将模板内建的上下文处理器从django.core.context_processors 移动到django.template.context_processors中。 
             ],
         },
     },
@@ -137,10 +147,23 @@ STATIC_URL = '/static/'
 
 STATICFILES = os.path.join(BASE_DIR, 'blog/static')
 
+BOOTSTRAP_ADMIN_SIDEBAR_MENU = True # 启用 bootstrap_admin
 
+# 使用 memcached 缓存
+#CACHES = {
+    #'default': {
+        #'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        #'LOCATION': '127.0.0.1:11211',
+    #}
+#}
 
-
-
+# 使用 Database 缓存
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',  # 缓存表
+    }
+}
 
 
 

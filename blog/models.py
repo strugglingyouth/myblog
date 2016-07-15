@@ -10,9 +10,10 @@ from django.contrib.auth.models import User
 from collections import defaultdict
 
 
+
 class ArctileManager(models.Manager):
     """
-        继承manager并为其添加一个 archive 方法
+        自定义管理器，继承manager并为其添加一个 archive 方法
     """
     
     def archive(self):
@@ -58,7 +59,7 @@ class Article(models.Model):
     tags = models.ManyToManyField('Tag', verbose_name='标签云', blank=True)
     #author = models.ForeignKey(User,'作者')
 
-    def __str__(self):
+    def __str__(self):  # 指明如何表示对象本身，系统一般默认使用 <Article: Article object> ，通过这个函数可以告诉系统使用title字段来表示这个对象
         return self.title
     def __unicode(self):
         return self.title
@@ -72,7 +73,6 @@ class Article(models.Model):
     def get_absolute_url(self):
         # reverse 解析 blog:detail 视图对应的 url  
         return reverse('blog:detail', kwargs={'article_id': self.pk})
-
 
 class Category(models.Model):
     """
@@ -119,7 +119,6 @@ class BlogComment(models.Model):
 
     def __unicode__(self):
         return self.body[:20]
-
 
 
 

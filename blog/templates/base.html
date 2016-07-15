@@ -1,12 +1,20 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<html lang="zh-CN">
+<html lang="en">
     <head>
-        <meta charset="UTF-8"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A layout example that shows off a blog page with a list of posts.">
+
         <title>My Blog</title>
         <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
         <!-- 引入代码高亮css样式 -->
-        <link rel="stylesheet" href="{% static 'blog/css/pygments/vim.css' %}">
+        <link rel="stylesheet" href="{% static 'blog/css/pygments/monokai.css' %}">
+        
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+        <link rel="stylesheet" href="http://picturebag.qiniudn.com/blog.css">
+        <link rel="stylesheet" href="http://picturebag.qiniudn.com/monokai.css">
     </head>
     <body>
     <div id="header">
@@ -15,11 +23,16 @@
             <ul id="header-nav">
                 <li><a href="{% url 'blog:index'%}">首页</a></li>
             </ul>
+            <ul id="header-nav">
+                <li><a href="{% url 'blog:rss'%}">RSS</a></li>
+            </ul>
+            
             <div id="header-right" class="login">
                 <div id="user-info">
                     <span id="dropdown-button">登录</span>
                 </div>
             </div>
+            
         </div>
     </div>
     

@@ -33,4 +33,14 @@ urlpatterns = [
     # 评论对应的 URL
     url(r'^article/(?P<article_id>\d+)/comment/$', views.CommentPostView.as_view(), name='comment'),
 
+    url(r'^feeds/$', views.RssFeed(), name="rss"),
+
+#    url(r'accounts/login/$', 'django.contrib.auth.views.login', {'template_name': login.html}),
+
+    # 登录页面
+#    url(r'^login/$', views.login, name="login"),
+
+    #登出
+#    url(r'logout/$', views.logout, name="logout"),
+
 ]

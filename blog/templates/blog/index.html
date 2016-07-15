@@ -21,7 +21,7 @@
                 <div id="bd" class="wrp clear-fix">
                     <div id="main">
                         {% load paginate_tags %}
-                        {% paginate article_list 2 %}
+                        {% paginate article_list 7 %} <!-- 每页的文章数 -->
                         {% for article in article_list %}
                             <div class="post">
                                 <div class="post-hd">
@@ -31,6 +31,7 @@
                                 <div class="post-bd">
                                     <!-- 	<p><a href=""><img src="" alt=""></a></p> -->
                                     <p>{{ article.abstract }}</p>
+                                    <p>{{ article.body|truncatechars:100 }}</p>
                                     <p><a href="" class="more-link"></a></p>
                                 </div>
                                 <div class="post-ft">
