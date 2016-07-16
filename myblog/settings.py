@@ -51,7 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE_CLASSES = [
-    'django.middleware.cache.UpdateCacheMiddleware', # 设置站点级缓存，update 中间件放在列表开始位置
+ #   'django.middleware.cache.UpdateCacheMiddleware', # 设置站点级缓存，update 中间件放在列表开始位置
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -65,7 +65,7 @@ MIDDLEWARE_CLASSES = [
 
     'pagination.middleware.PaginationMiddleware',  # 分页中间件
 
-    'django.middleware.cache.FetchFromCacheMiddleware', # fetch 中间件放在最后
+  #  'django.middleware.cache.FetchFromCacheMiddleware', # fetch 中间件放在最后
 ]
 
 ROOT_URLCONF = 'myblog.urls'

@@ -1,15 +1,29 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% block content %}
+ <div class="container">
+        <div class="row">
+            <div id="bd" class="wrp clear-fix">
+                <div id="main">
+                    <div id="detail-title">
+                    </div>
+                    <div id="post-1951"
+                         class="post-1951 post type-post status-publish format-standard hentry category-meida-report">
+                        
+                        <div class="post-bd">
+                        <p>
+                            修炼于茅坡村，擅长自动化打野<br/>
+                            
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
 
+                        </p>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
 
-    <body>
-        <h1>about</h1>
-    </body>
-    <hr/>
-    <h2>Published</h2>
-    {% for body in context %}
-        <li>{{ body.title }}</li>
-        <li>{{ body.body }}</li>
-    {% endfor %}
-
-</html>
+{% endblock %}

@@ -130,7 +130,7 @@ class CommentPostView(FormView):
 
 
         comment = form.save(commit=False)   #实例化一个 comment 对象，但是不保存评论
-        comment.article = target_article    # 为 comment 关联一个文章
+        comment.article = target_article    # 为 comment 关联一个文章,即添加一个属性
         comment.save()                      # 保存评论的内容
 
         # 评论完成后返回到被评论的文章页面, get_obsolute_url 是 Article 新增的一个方法方便,获取文章对用的 url
@@ -153,6 +153,9 @@ class CommentPostView(FormView):
         })
 
 class RssFeed(Feed):
+    """
+        RSS 订阅
+    """
     title = "RSS Feed - article"
     link = "/feeds/"
     description = "RSS feed - blog posts"
@@ -176,6 +179,23 @@ class LoginView(TemplateView):
     def get_context_data(self, **kwargs):
         pass
 
+def Github(request):
+    """
+        Github
+    """
+    return HttpResponseRedirect('https://github.com/strugglingyouth')
+
+
+class AboutView(ListView):
+    """
+        About me
+    """
+    template_name = "blog/about.html"
+    context_object_name = "article_about_me"
+
+    def get_queryset(self):
+        article_about_me = Article.objects.filter(category__name='about',status='w')
+        return article_about_me   
 
 
 

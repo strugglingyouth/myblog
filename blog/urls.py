@@ -34,6 +34,8 @@ urlpatterns = [
     url(r'^article/(?P<article_id>\d+)/comment/$', views.CommentPostView.as_view(), name='comment'),
 
     url(r'^feeds/$', views.RssFeed(), name="rss"),
+    url(r'^about/$', views.AboutView.as_view(), name="about"),
+    url(r'^github/$', views.Github, name="github"),
 
 #    url(r'accounts/login/$', 'django.contrib.auth.views.login', {'template_name': login.html}),
 
