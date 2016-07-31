@@ -5,6 +5,7 @@ from .forms import BlogCommentForm
 from django.views.generic import ListView, DetailView, FormView, TemplateView
 from blog.models import Article, Category, Tag, BlogComment
 from django.contrib.syndication.views import Feed
+from django.http import HttpResponse
 import markdown2
 
 
@@ -48,8 +49,15 @@ class ArticleDetailView(DetailView):
 
 
     def get_object(self, queryset=None):
-        obj = super(ArticleDetailView, self).get_object()  #重写 get_object
-        obj.body = markdown2.markdown(obj.body, extras=['fenced-code-blocks'], )
+        """ 
+            错误处理，请求文章不存在
+        """
+        try:
+            obj = super(ArticleDetailView, self).get_object()  #重写 get_object
+            obj.body = markdown2.markdown(obj.body, extras=['fenced-code-blocks'], )
+        except Exception as e:
+            obj="Article  is NotFound!"
+            return obj
         return obj  
 
     # 增加 form 到 context

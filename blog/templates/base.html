@@ -8,6 +8,7 @@
 
         <title>My Blog</title>
         <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+        <link rel="stylesheet" href="http://demo.cssmoban.com/cssthemes3/spdn_17_style-7/css/bootstrap.min.css">
         <!-- 引入代码高亮css样式 -->
         <link rel="stylesheet" href="{% static 'blog/css/pygments/monokai.css' %}">
         
@@ -16,7 +17,8 @@
         <link rel="stylesheet" href="http://picturebag.qiniudn.com/blog.css">
         <link rel="stylesheet" href="http://picturebag.qiniudn.com/monokai.css">
     </head>
-    <body>
+    <body style="background:#edf4f6;">
+    
     <div id="header">
         <div id="header-warp">
             <a href="{% url 'blog:index' %}" title="第一个博客" id="logo"></a>

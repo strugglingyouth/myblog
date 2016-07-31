@@ -57,11 +57,11 @@ class Article(models.Model):
     category = models.ForeignKey('Category', verbose_name='分类',null=True,on_delete=models.SET_NULL)
     # blank 为 true，说明网页中填写的字段可以为空，null 为 True 说明 mysql 中的表可以为空
     tags = models.ManyToManyField('Tag', verbose_name='标签云', blank=True)
-    #author = models.ForeignKey(User,'作者')
+    #author = models.ForeignKey('auth.User','作者')
 
     def __str__(self):  # 指明如何表示对象本身，系统一般默认使用 <Article: Article object> ，通过这个函数可以告诉系统使用title字段来表示这个对象
         return self.title
-    def __unicode(self):
+    def __unicode__(self):
         return self.title
 
     objects = ArctileManager()
