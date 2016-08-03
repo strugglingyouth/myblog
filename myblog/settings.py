@@ -97,9 +97,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'blog',
-        'HOST': '127.0.0.1',
+        'HOST': 'mysql',
         'USER': 'root',
         'PASSWORD': '123456',
+        'PORT': '3306',
 
     }
 }
@@ -147,6 +148,8 @@ STATIC_URL = '/static/'
 
 STATICFILES = os.path.join(BASE_DIR, 'blog/static')
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True # 启用 bootstrap_admin
 
 # 使用 memcached 缓存
@@ -157,13 +160,19 @@ BOOTSTRAP_ADMIN_SIDEBAR_MENU = True # 启用 bootstrap_admin
     #}
 #}
 
-# 使用 Database 缓存
+
+
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'my_cache_table',  # 缓存表
+    "default": {
+                "BACKEND": "django_redis.cache.RedisCache",
+                "LOCATION": "redis://redis:6379/1",
+                "OPTIONS": {
+                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                    
+        }   
     }
 }
+
 
 
 
